@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>YudzHost</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+:root{
+  --blue-1: #1e3a8a;
+  --blue-2: #2563eb;
+  --blue-3: #3b82f6;
+  --blue-light: #60a5fa;
+  --accent: #93c5fd;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;width:100%;overflow-x:hidden;}
+body{
+  font-family:'Poppins',sans-serif;
+  background: #000000;
+  color:#e0f2fe;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  min-height:100vh;
+}
+
+.container{
+  position:relative;
+  z-index:2;
+  width:100%;
+  max-width:680px;
+  margin:20px auto;
+  padding:24px;
+  border-radius:20px;
+  background:rgba(15,23,42,0.5);
+  border:2px solid rgba(59,130,246,0.6);
+  text-align:center;
+  max-height:90vh;
+  overflow-y:auto;
+}
+
+.slider-container{
+  position:relative;
+  width:100%;
+  overflow:hidden;
+  border-radius:14px;
+  border: 2px solid rgba(59,130,246,0.6);
+  aspect-ratio: 16 / 9;
+  background: #000;
+  margin-bottom:18px;
+}
+
+.slider-wrapper{
+  display:flex;
+  width:100%;
+  height:100%;
+  transition:transform 0.3s ease;
+}
+
+.slider-item{
+  width:100%;
+  height:100%;
+  flex: 0 0 100%;
+}
+
+.slider-item img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:14px;
+}
+
+/* Bagian Style Tambahan */
+.channel-section{
+  margin-bottom:16px;
+  padding:10px;
+  border-radius:10px;
+  background:rgba(15,23,42,0.7);
+  border:2px solid rgba(59,130,246,0.6);
+}
+.channel-link{
+  display:block;
+  color:var(--blue-light);
+  text-decoration:none;
+  font-weight:600;
+  margin-top:8px;
+}
+
+.small-btn{
+  display:inline-block;
+  width:auto;
+  padding:8px 16px;
+  font-size:14px;
+  margin:0;
+}
+
+h2{
+  font-family:'Orbitron',sans-serif;
+  font-size:17px;
+  color:#ffffff;
+  margin:16px auto 24px;
+  font-weight:700;
+  letter-spacing:2px;
+  background:linear-gradient(90deg,var(--blue-1),var(--blue-2));
+  padding:14px 20px;
+  border-radius:10px;
+  border:2px solid rgba(59,130,246,0.6);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  width:300px;
+}
+
+.input-wrap{
+  display:flex;
+  align-items:center;
+  background:rgba(15,23,42,0.7);
+  border:2px solid rgba(59,130,246,0.6);
+  border-radius:10px;
+  padding:12px 14px;
+  margin-bottom:18px;
+}
+.input-wrap i{
+  color:var(--blue-light);
+  margin-right:10px;
+  font-size:18px;
+}
+.input-wrap input{
+  flex:1;
+  background:none;
+  border:none;
+  outline:none;
+  color:#e0f2fe;
+  font-size:15px;
+}
+.input-wrap input::placeholder{
+  color:rgba(224,242,254,0.4);
+}
+
+.btn{
+  display:block;
+  width:100%;
+  margin:8px 0;
+  padding:14px 20px;
+  border:none;
+  border-radius:10px;
+  font-weight:700;
+  font-size:16px;
+  cursor:pointer;
+  background:linear-gradient(90deg,var(--blue-1),var(--blue-2));
+  color:#fff;
+}
+.btn:disabled{
+  opacity:0.5;
+  cursor:not-allowed;
+}
+
+#sideMenu {
+  position: fixed;
+  top: 0;
+  left: -260px;
+  width: 260px;
+  height: 100vh;
+  background:rgba(15,23,42,0.95);
+  border-right:2px solid rgba(59,130,246,0.6);
+  padding: 30px 20px;
+  display:flex;
+  flex-direction:column;
+  gap: 15px;
+  transition: 0.3s;
+  z-index:9;
+}
+#sideMenu h3{
+  color:var(--blue-light);
+  font-family:'Orbitron',sans-serif;
+  font-size:20px;
+  margin-bottom:20px;
+  text-align:center;
+  padding-bottom:10px;
+  border-bottom:2px solid rgba(59,130,246,0.4);
+}
+#sideMenu .menu-list-title{
+  color:var(--accent);
+  font-size:14px;
+  font-weight:700;
+  margin-top:15px;
+  margin-bottom:10px;
+  padding-left:5px;
+}
+#sideMenu a{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 15px;
+  border-radius:8px;
+  background:rgba(59,130,246,0.2);
+  border:2px solid rgba(59,130,246,0.6);
+  color:white;
+  text-decoration:none;
+  font-size:15px;
+}
+
+#overlay {
+  position: fixed;
+  inset:0;
+  background: rgba(0,0,0,0.6);
+  z-index:8;
+  display:none;
+}
+
+.toast{
+  position:fixed;
+  right:18px;
+  top:18px;
+  z-index:9999;
+  background:rgba(15,23,42,0.95);
+  color:#fff;
+  padding:10px 14px;
+  border-radius:8px;
+  border:2px solid var(--blue-light);
+  opacity:0;
+  transform:translateY(-8px);
+  transition:opacity .18s,transform .18s;
+  font-weight:600;
+}
+.toast.show{opacity:1;transform:translateY(0);}
+
+.loader{
+  border:3px solid rgba(255,255,255,0.1);
+  border-top:3px solid var(--blue-3);
+  border-radius:50%;
+  width:40px;
+  height:40px;
+  animation:spinLoader 1s linear infinite;
+  margin:10px auto;
+  display:none;
+}
+@keyframes spinLoader{
+  0%{transform:rotate(0deg);}
+  100%{transform:rotate(360deg);}
+}
+
+.result-box{
+  margin-top:18px;
+  padding:12px;
+  border-radius:12px;
+  background:rgba(15,23,42,0.7);
+  border:2px solid rgba(59,130,246,0.6);
+  display:none;
+}
+.result-box img, .result-box video{
+  max-width:100%;
+  border-radius:8px;
+  margin-bottom:10px;
+}
+.result-box .info-text{
+  color:var(--blue-light);
+  margin-bottom:10px;
+  font-size:14px;
+}
+</style>
+</head>
+<body>
+<div id="sideMenu">
+  <h3>YudzHost</h3>
+  
+  <div class="menu-list-title">PROJECT</div>
+  <a href="https://join-syifa-teams.vercel.app/" target="_blank">
+    <i class="fas fa-globe"></i> Syifa Teams
+  </a>
+  <a href="https://sticker-brat-generatorr.vercel.app/" target="_blank">
+    <i class="fas fa-image"></i> Brat Generator
+  </a>
+</div>
+
+<div id="overlay"></div>
+
+<div class="container">
+  <div class="slider-container" id="sliderContainer">
+    <div class="slider-wrapper" id="sliderWrapper">
+      <div class="slider-item"><img src="https://files.catbox.moe/an2paf.jpeg" alt="Image 1"></div>
+      <div class="slider-item"><img src="https://files.catbox.moe/mlh5ys.jpeg" alt="Image 2"></div>
+      <div class="slider-item"><img src="https://files.catbox.moe/kh5tgf.jpeg" alt="Image 3"></div>
+      <div class="slider-item"><img src="https://files.catbox.moe/91kt4a.jpeg" alt="Image 4"></div>
+      <div class="slider-item"><img src="https://files.catbox.moe/ti3ivu.jpeg" alt="Image 5"></div>
+    </div>
+  </div>
+
+  <!-- Bagian Tombol Buka Menu & Link Saluran -->
+  <div class="channel-section">
+    <button class="btn small-btn" onclick="openMenu()">
+      <i class="fas fa-bars"></i> MENU
+    </button>
+    <a href="https://whatsapp.com/channel/0029Vb7GvRI9hXF6P9zb1e2H" target="_blank" class="channel-link">
+      <i class="fab fa-whatsapp"></i> JOIN SALURAN OWNER
+    </a>
+  </div>
+  
+  <h2><i class="fab fa-pinterest"></i> PINTEREST DOWN</h2>
+
+  <div class="input-wrap">
+    <i class="fa-solid fa-link"></i>
+    <input type="text" id="url" placeholder="Tempel Link Pinterest Disini...">
+    <i class="fa-solid fa-paste paste-icon" onclick="pasteLink()" style="margin-right:0; margin-left:10px; cursor:pointer; color:var(--blue-light);"></i>
+  </div>
+
+  <button class="btn" id="downloadBtn" onclick="downloadPinterest()">
+    <i class="fa-solid fa-download"></i> Proses Download
+  </button>
+  
+  <div class="loader" id="loader"></div>
+
+  <div id="result" class="result-box">
+    <p class="info-text"><i class="fas fa-check-circle"></i> Konten Siap Di-download:</p>
+    <div id="mediaContainer"></div>
+    <a id="downloadLink" class="btn" href="#" target="_blank" download>
+      <i class="fa-solid fa-download"></i> Download Konten
+    </a>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const toast=document.getElementById("toast");
+function showToast(msg,ms=2200){
+  toast.textContent=msg;
+  toast.classList.add("show");
+  clearTimeout(toast._timer);
+  toast._timer=setTimeout(()=>toast.classList.remove("show"),ms);
+}
+
+// Fungsi Slider
+document.addEventListener('DOMContentLoaded', function () {
+  const sliderWrapper = document.getElementById('sliderWrapper');
+  const sliderContainer = document.getElementById('sliderContainer');
+  const slides = document.querySelectorAll('.slider-item');
+  let currentIndex = 0;
+  let startX = 0;
+  let isDragging = false;
+
+  function updateSlider() {
+    sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+  }
+
+  function goToSlide(index) {
+    currentIndex = Math.max(0, Math.min(index, slides.length - 1));
+    updateSlider();
+  }
+
+  function nextSlide() {
+    currentIndex = (currentIndex + 1) % slides.length;
+    updateSlider();
+  }
+
+  function prevSlide() {
+    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+    updateSlider();
+  }
+
+  // Event untuk sentuhan (mobile)
+  sliderContainer.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+    isDragging = true;
+  });
+
+  sliderContainer.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+  }, { passive: false });
+
+  sliderContainer.addEventListener('touchend', (e) => {
+    if (!isDragging) return;
+    const endX = e.changedTouches[0].clientX;
+    const diff = startX - endX;
+    
+    if (Math.abs(diff) > 50) {
+      diff > 0 ? nextSlide() : prevSlide();
+    }
+    isDragging = false;
+  });
+
+  // Event untuk klik (desktop)
+  sliderContainer.addEventListener('mousedown', (e) => {
+    startX = e.clientX;
+    isDragging = true;
+    e.preventDefault();
+  });
+
+  sliderContainer.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+  });
+
+  sliderContainer.addEventListener('mouseup', (e) => {
+    if (!isDragging) return;
+    const endX = e.clientX;
+    const diff = startX - endX;
+    
+    if (Math.abs(diff) > 50) {
+      diff > 0 ? nextSlide() : prevSlide();
+    }
+    isDragging = false;
+  });
+
+  sliderContainer.addEventListener('mouseleave', () => {
+    isDragging = false;
+  });
+
+  // Auto slide setiap 5 detik
+  setInterval(nextSlide, 5000);
+});
+
+// Fungsi Menu Samping
+const sideMenu = document.getElementById('sideMenu');
+const overlay = document.getElementById('overlay');
+
+function openMenu() {
+  sideMenu.style.left = '0px';
+  overlay.style.display = 'block';
+}
+
+function closeMenu() {
+  sideMenu.style.left = '-260px';
+  overlay.style.display = 'none';
+}
+
+overlay.addEventListener('click', closeMenu);
+
+// Fungsi Tempel Link
+async function pasteLink() {
+  try {
+    const text = await navigator.clipboard.readText();
+    document.getElementById('url').value = text;
+    showToast('Link berhasil ditempel!');
+  } catch {
+    showToast('Gagal mengambil clipboard!');
+  }
+}
+
+// Enter Key untuk Proses
+document.getElementById('url').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') {
+    downloadPinterest();
+  }
+});
+
+// Fungsi Download Pinterest
+async function downloadPinterest() {
+  const url = document.getElementById('url').value.trim();
+  const downloadBtn = document.getElementById('downloadBtn');
+  const loader = document.getElementById('loader');
+  const resultBox = document.getElementById('result');
+  const mediaContainer = document.getElementById('mediaContainer');
+  const downloadLink = document.getElementById('downloadLink');
+  
+  if (!url) {
+    showToast("Masukkan Link Pinterest Dulu!");
+    return;
+  }
+  
+  try {
+    downloadBtn.disabled = true;
+    loader.style.display = 'block';
+    resultBox.style.display = 'none';
+       mediaContainer.innerHTML = '';
+    showToast("Sedang Memproses Link...");
+    
+    const api = `https://api.nvidiabotz.xyz/download/pinterest?url=${encodeURIComponent(url)}`;
+    const res = await fetch(api);
+    const json = await res.json();
+
+    if (!json.status) throw new Error(json.message || 'Gagal mengambil data!');
+    const data = json.result;
+    
+    // Tampilkan judul jika ada
+    if (data.title) {
+      const titleElement = document.createElement('p');
+      titleElement.className = 'info-text';
+      titleElement.innerHTML = `<strong>Judul:</strong> ${data.title}`;
+      mediaContainer.appendChild(titleElement);
+    }
+    
+    // Tampilkan media (gambar atau video)
+    if (data.image) {
+      const imgElement = document.createElement('img');
+      imgElement.src = data.image;
+      imgElement.alt = 'Pinterest Image';
+      mediaContainer.appendChild(imgElement);
+      downloadLink.href = data.image;
+      downloadLink.download = `pinterest_image_${Date.now()}.jpg`;
+    }
+    
+    if (data.video) {
+      const videoElement = document.createElement('video');
+      videoElement.src = data.video;
+      videoElement.controls = true;
+      videoElement.preload = 'metadata';
+      mediaContainer.appendChild(videoElement);
+      downloadLink.href = data.video;
+      downloadLink.download = `pinterest_video_${Date.now()}.mp4`;
+    }
+    
+    resultBox.style.display = 'block';
+    showToast('Konten Siap Di-download!');
+    
+  } catch (err) {
+    console.error(err);
+    showToast(err.message || 'Gagal Memproses Link!');
+  } finally {
+    loader.style.display = 'none';
+    downloadBtn.disabled = false;
+  }
+}
+</script>
+</body>
+</html>
